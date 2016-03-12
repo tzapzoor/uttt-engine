@@ -16,26 +16,26 @@
 //    file that was distributed with this source code.
 
 
-package com.theaigames.fourinarow;
+package com.theaigames.ultimatetictactoe;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.theaigames.engine.io.IOPlayer;
-import com.theaigames.fourinarow.field.Field;
-import com.theaigames.fourinarow.player.Player;
 import com.theaigames.game.AbstractGame;
 import com.theaigames.game.player.AbstractPlayer;
+import com.theaigames.ultimatetictactoe.board.Board;
+import com.theaigames.ultimatetictactoe.player.Player;
 
-public class FourInARow extends AbstractGame {
+public class UltimateTicTacToe extends AbstractGame {
     
     private final int TIMEBANK_MAX = 10000;
     private final int TIME_PER_MOVE = 500;
-    private final int FIELD_COLUMNS = 7;
-    private final int FIELD_ROWS = 6;   
-    private List<Player> players;
-    private Field mField;
+    private Board mBoard;
     private int mBotId = 1;
+    
+    private List<Player> players;
+    
 
     @Override
     public void setupGame(ArrayList<IOPlayer> ioPlayers) throws Exception {         
@@ -43,7 +43,7 @@ public class FourInARow extends AbstractGame {
         this.players = new ArrayList<Player>();
         
         // create the playing field
-        this.mField = new Field(FIELD_COLUMNS, FIELD_ROWS);
+        this.mBoard = new Board();
         
         for(int i=0; i<ioPlayers.size(); i++) {
             // create the player
@@ -59,7 +59,7 @@ public class FourInARow extends AbstractGame {
         }
         
         // create the processor
-        super.processor = new Processor(this.players, this.mField);
+        super.processor = new Processor(this.players, this.mBoard);
     }
     
     @Override
@@ -68,9 +68,7 @@ public class FourInARow extends AbstractGame {
         player.sendSetting("time_per_move", TIME_PER_MOVE);
         player.sendSetting("player_names", this.players.get(0).getName() + "," + this.players.get(1).getName());
         player.sendSetting("your_bot", player.getName());
-        player.sendSetting("your_botid",mBotId);
-        player.sendSetting("field_columns", FIELD_COLUMNS);
-        player.sendSetting("field_rows", FIELD_ROWS);
+        player.sendSetting("your_botid", mBotId);
         mBotId++;
     }
 
@@ -83,14 +81,15 @@ public class FourInARow extends AbstractGame {
     // DEV_MODE can be turned on to easily test the
     // engine from eclipse
     public static void main(String args[]) throws Exception {
-        FourInARow game = new FourInARow();
-
+        
+    	UltimateTicTacToe game = new UltimateTicTacToe();
+    	
         // DEV_MODE settings
         game.TEST_BOT = "java -cp /home/jim/workspace/fourinarow-starterbot-java/bin/ bot.BotStarter";
         game.NUM_TEST_BOTS = 2;
         game.DEV_MODE = false;
         
-        game.setupEngine(args);
-        game.runEngine();
+        //game.setupEngine(args);
+        //game.runEngine();
     }
 }

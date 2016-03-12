@@ -15,30 +15,20 @@
 //    For the full copyright and license information, please view the LICENSE
 //    file that was distributed with this source code.
 
-package com.theaigames.fourinarow.moves;
 
-import com.theaigames.game.moves.AbstractMove;
+package com.theaigames.ultimatetictactoe.player;
+
+import com.theaigames.engine.io.IOPlayer;
 import com.theaigames.game.player.AbstractPlayer;
 
-public class Move extends AbstractMove {
+public class Player extends AbstractPlayer {
+    int mId;
+    public Player(String name, IOPlayer bot, long maxTimeBank, long timePerMove, int id) {      
+        super(name, bot, maxTimeBank, timePerMove);
+        mId = id;
+    }
 
-    private int mColumn = 0;
-    
-    public Move(AbstractPlayer player) {
-        super(player);
-    }
-    
-    /**
-     * @param column : Sets the column of a move
-     */
-    public void setColumn(int column) {
-        this.mColumn = column;
-    }
-    
-    /**
-     * @return : Column of move
-     */
-    public int getColumn() {
-        return mColumn;
+    public int getId() {
+        return mId;
     }
 }

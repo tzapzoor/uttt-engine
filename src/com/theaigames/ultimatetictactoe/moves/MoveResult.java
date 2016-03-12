@@ -15,28 +15,32 @@
 //    For the full copyright and license information, please view the LICENSE
 //    file that was distributed with this source code.
 
+package com.theaigames.ultimatetictactoe.moves;
 
-package com.theaigames.fourinarow.moves;
-
-import com.theaigames.fourinarow.field.Field;
 import com.theaigames.game.player.AbstractPlayer;
+import com.theaigames.ultimatetictactoe.board.Board;
 
 public class MoveResult extends Move {
-    private String mBoard;
-    private int mPlayerId;
+	private String mBoard;
+	private String mMacroBoard;
+	private int mPlayerId;
 
-    public MoveResult(AbstractPlayer player, Field field, int playerId) {
-        super(player);
-        mBoard = field.toString();
-        mPlayerId = playerId;
-    }
-    
-    public String toString() {
-        return mBoard;
-    }
-    
+	public MoveResult(AbstractPlayer player, Board field, int playerId) {
+		super(player);
+		mMacroBoard = field.macroBoardString();
+		mBoard = field.toString();
+		mPlayerId = playerId;
+	}
 
-    public int getPlayerId() {
-        return mPlayerId;
-    }
+	public String toString() {
+		return mBoard;
+	}
+
+	public String getMacroBoard() {
+		return mMacroBoard;
+	}
+
+	public int getPlayerId() {
+		return mPlayerId;
+	}
 }
