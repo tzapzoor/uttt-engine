@@ -1,7 +1,9 @@
-/bin/
+bin/
 .classpath
 .project
 .settings/
 *.class
 err.txt
 out.txt
+bots/*bin/
+data/*/*.json

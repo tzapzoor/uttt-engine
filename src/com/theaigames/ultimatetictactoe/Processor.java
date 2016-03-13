@@ -79,13 +79,7 @@ public class Processor implements GameHandler {
 					moveResult.setIllegalMove(mBoard.getLastError());
 					mMoveResults.add(moveResult);
 				} else {
-					// move = new Move(player);
 					moveResult = new MoveResult(player, mBoard, player.getId());
-					// move.setPosition(mBoard.getLastMiniBoard(),
-					// mBoard.getLastCell());
-					// move.setIllegalMove(mBoard.getLastError() +
-					// " (first try)");
-					// mMoves.add(move);
 					moveResult.setPosition(mBoard.getLastRow(), mBoard
 							.getLastCol());
 					moveResult.setIllegalMove(mBoard.getLastError()
@@ -107,14 +101,8 @@ public class Processor implements GameHandler {
 								.getLastCol());
 						mMoveResults.add(moveResult);
 					} else {
-						// move = new Move(player);
 						moveResult = new MoveResult(player, mBoard, player
 								.getId());
-						// move.setPosition(mBoard.getLastMiniBoard(),
-						// mBoard.getLastCell());
-						// move.setIllegalMove(mBoard.getLastError()
-						// + " (second try)");
-						// mMoves.add(move);
 						moveResult.setPosition(mBoard.getLastRow(), mBoard
 								.getLastCol());
 						moveResult.setIllegalMove(mBoard.getLastError()
@@ -137,14 +125,8 @@ public class Processor implements GameHandler {
 									.getLastCol());
 							mMoveResults.add(moveResult);
 						} else { /* Too many errors, other player wins */
-							// move = new Move(player);
 							moveResult = new MoveResult(player, mBoard, player
 									.getId());
-							// move.setPosition(mBoard.getLastMiniBoard(),
-							// mBoard.getLastCell());
-							// move.setIllegalMove(mBoard.getLastError()
-							// + " (last try)");
-							// mMoves.add(move);
 							moveResult.setPosition(mBoard.getLastRow(), mBoard
 									.getLastCol());
 							moveResult.setIllegalMove(mBoard.getLastError()
@@ -229,11 +211,10 @@ public class Processor implements GameHandler {
 				writer.close();
 
 			} catch (IOException e) {
-				e.printStackTrace();
+				// e.printStackTrace();
 			}
 		}
 
-		// System.err.println("Moves: " + mMoves.size());
 		if (getWinner() != null) {
 			return "Conclusion: WINNER " + getWinner().getName() + "\n\n";
 		}

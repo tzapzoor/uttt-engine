@@ -1,28 +1,13 @@
-fourinarow-engine
+Ultimate Tic Tac Toe Engine
 ============
-
-The engine for the Four In A row competition at TheAIGames.com
-
-This version of our Four In A Row engine has been set up for local use, for your own convenience. Note that this does *not* include the visualizer.
-
-To compile (Windows):
-
-    cd [project folder]
-    dir /b /s *.java>sources.txt
-    md classes
-    javac -d classes @sources.txt
-    del sources.txt
 
 To compile (Linux):
 
-    cd [project folder]
-    mkdir bin/
-    javac -d bin/ `find ./ -name '*.java' -regex '^[./A-Za-z0-9]*$'`
-    
+    $ ./compile.sh
+
 To run:
 
-    cd [project folder]
-    java -cp bin com.theaigames.fourinarow.FourInARow [your bot1] [your bot2] 2>err.txt 1>out.txt
+    $ ./test.sh [bot1] [bot2]
 
 [your bot1] and [your bot2] could be any command for running a bot process. For instance "java -cp /home/dev/starterbot/bin/ main.BotStarter" or "node /home/user/bot/Bot.js"
 

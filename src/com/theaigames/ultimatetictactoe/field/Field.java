@@ -19,9 +19,11 @@ package com.theaigames.ultimatetictactoe.field;
 
 public class Field {
 
-	// should ignore
-	private int mRoundNr;
-	private int mMoveNr;
+	// should ignore. these members were added here
+	// for exporting to json
+	private int mRoundNr = 1;
+	private int mMoveNr = 1;
+
 	private int[][] mBoard;
 	private int[][] mMacroboard;
 
@@ -211,8 +213,11 @@ public class Field {
 				if (mBoard[row][col] == 0) {
 					mBoard[row][col] = player;
 					updateMacroBoard(row, col);
-					System.err.println("After move (" + row + ", " + col + ")");
-					dumpBoard();
+					// Hi there, I'm here to help!. Just uncomment these lines!
+
+					// System.err.println("After move (" + row + ", " + col +
+					// ")");
+					// dumpBoard();
 					return true;
 				} else {
 					mLastError = "Cell already occupied ("
@@ -299,9 +304,7 @@ public class Field {
 		return boardIsWon(0, 0, mMacroboard);
 	}
 
-	/* might be buuggy */
 	public boolean isFull() {
-		System.err.println("Calling field.isFull()");
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 0; j < COLS; j++) {
 				if (mMacroboard[i][j] == -1) {
@@ -309,7 +312,6 @@ public class Field {
 				}
 			}
 		}
-		System.err.println("Field is full. Must end as a draw!");
 		return true;
 	}
 }
