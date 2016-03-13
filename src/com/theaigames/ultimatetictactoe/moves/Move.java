@@ -33,9 +33,9 @@ public class Move extends AbstractMove {
 	 * @param column
 	 *            : Sets the column of a move
 	 */
-	public void setPosition(int col, int row) {
-		this.mCol = col;
+	public void setPosition(int row, int col) {
 		this.mRow = row;
+		this.mCol = col;
 	}
 
 	/**

@@ -15,23 +15,24 @@
 //    For the full copyright and license information, please view the LICENSE
 //    file that was distributed with this source code.
 
-package com.theaigames.ultimatetictactoe.board;
+package com.theaigames.ultimatetictactoe.field;
 
-public class Board {
-
-	public final int COLS = 3;
-	public final int ROWS = 3;
-
+public class Field {
+	// should ignore
+	private int mRoundNr;
+	private int mMoveNr;
 	private int[][] mBoard;
-	private int[][] mMacroBoard;
+	private int[][] mMacroboard;
 
+	public final int COLS = 3, ROWS = 3;
 	public String mLastError = "";
-	private int mLastCol = 0;
-	private int mLastRow = 0;
 
-	public Board() {
+	transient private int mLastCol = 0;
+	transient private int mLastRow = 0;
+
+	public Field() {
 		mBoard = new int[ROWS * COLS][ROWS * COLS];
-		mMacroBoard = new int[ROWS][COLS];
+		mMacroboard = new int[ROWS][COLS];
 		clearBoard();
 	}
 
@@ -45,7 +46,7 @@ public class Board {
 		// the first player can choose any mini board to play in
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 0; j < COLS; j++) {
-				mMacroBoard[i][j] = -1;
+				mMacroboard[i][j] = -1;
 			}
 		}
 	}
@@ -55,27 +56,27 @@ public class Board {
 	 */
 	public void dumpBoard() {
 		for (int x = 0; x < ROWS * COLS; x++) {
-			System.out.print("--");
+			System.err.print("--");
 		}
-		System.out.println();
+		System.err.println();
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 0; j < COLS; j++) {
-				System.out.print(mMacroBoard[i][j]);
+				System.err.print(mMacroboard[i][j]);
 				if (i < ROWS - 1 || j < COLS - 1) {
-					System.out.print(",");
+					System.err.print(",");
 				}
 			}
 		}
-		System.out.println();
+		System.err.println();
 		for (int x = 0; x < ROWS * COLS; x++) {
-			System.out.print("--");
+			System.err.print("--");
 		}
-		System.out.println();
+		System.err.println();
 		for (int i = 0; i < ROWS * COLS; i++) {
 			for (int j = 0; j < ROWS * COLS; j++) {
-				System.out.print(mBoard[i][j] + " ");
+				System.err.print(mBoard[i][j] + " ");
 			}
-			System.out.println();
+			System.err.println();
 		}
 	}
 
@@ -148,7 +149,7 @@ public class Board {
 		return true;
 	}
 
-	/* To hardcode or not to hardcode, this is the question...*/
+	/* To hardcode or not to hardcode, this is the question... */
 	private int getNextIndex(int currentIndex) {
 		int begin = ((int) currentIndex / ROWS) * ROWS;
 		if (currentIndex == begin) {
@@ -163,34 +164,34 @@ public class Board {
 		// make active miniboards inactive
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 0; j < COLS; j++) {
-				if (mMacroBoard[i][j] == -1) {
-					mMacroBoard[i][j] = 0;
+				if (mMacroboard[i][j] == -1) {
+					mMacroboard[i][j] = 0;
 				}
 			}
 		}
 
 		// check if current miniboard has a winner
-		int player = boardIsWon(((int) row / ROWS) * ROWS, ((int) col / COLS) * COLS,
-				mBoard);
+		int player = boardIsWon(((int) row / ROWS) * ROWS, ((int) col / COLS)
+				* COLS, mBoard);
 		if (player > 0) {
-			mMacroBoard[(int) row / ROWS][(int) col / COLS] = player;
+			mMacroboard[(int) row / ROWS][(int) col / COLS] = player;
 		}
 
 		// check if the next miniboard is full or is already decided
 		int nextRow = getNextIndex(row);
 		int nextCol = getNextIndex(col);
-		if (mMacroBoard[(int) nextRow / ROWS][(int) nextCol / COLS] == 0
+		if (mMacroboard[(int) nextRow / ROWS][(int) nextCol / COLS] > 0
 				|| miniBoardIsFull(nextRow, nextCol)) {
 			for (int i = 0; i < ROWS; i++) {
 				for (int j = 0; j < COLS; j++) {
-					if (mMacroBoard[i][j] == 0
+					if (mMacroboard[i][j] == 0
 							&& !miniBoardIsFull(ROWS * i, COLS * j)) {
-						mMacroBoard[i][j] = -1;
+						mMacroboard[i][j] = -1;
 					}
 				}
 			}
 		} else {
-			mMacroBoard[(int) nextRow / ROWS][(int) nextCol / COLS] = -1;
+			mMacroboard[(int) nextRow / ROWS][(int) nextCol / COLS] = -1;
 		}
 	}
 
@@ -205,10 +206,12 @@ public class Board {
 		mLastRow = row;
 
 		if ((col >= 0 && col < ROWS * COLS) && (row >= 0 && row < ROWS * COLS)) {
-			if (mMacroBoard[(int) row / ROWS][(int) col / COLS] == -1) {
+			if (mMacroboard[(int) row / ROWS][(int) col / COLS] == -1) {
 				if (mBoard[row][col] == 0) {
 					mBoard[row][col] = player;
 					updateMacroBoard(row, col);
+					System.err.println("After move (" + row + ", " + col + ")");
+					dumpBoard();
 					return true;
 				} else {
 					mLastError = "Cell already occupied ("
@@ -274,7 +277,7 @@ public class Board {
 		String r = "";
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 0; j < COLS; j++) {
-				r += mMacroBoard[i][j];
+				r += mMacroboard[i][j];
 				if (i != ROWS - 1 || j != COLS - 1) {
 					r += ",";
 				}
@@ -292,13 +295,14 @@ public class Board {
 	 */
 	public int getWinner() {
 		// check if macroboard has a winner
-		return boardIsWon(0, 0, mMacroBoard);
+		return boardIsWon(0, 0, mMacroboard);
 	}
 
 	public boolean isFull() {
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 0; j < COLS; j++) {
-				if (mMacroBoard[i][j] <= 0 && !miniBoardIsFull(ROWS * i, COLS * j)) {
+				if (mMacroboard[i][j] <= 0
+						&& !miniBoardIsFull(ROWS * i, COLS * j)) {
 					return false;
 				}
 			}

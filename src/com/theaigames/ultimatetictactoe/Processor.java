@@ -17,12 +17,15 @@
 
 package com.theaigames.ultimatetictactoe;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.theaigames.game.player.AbstractPlayer;
 import com.theaigames.game.GameHandler;
-import com.theaigames.ultimatetictactoe.board.Board;
+import com.theaigames.ultimatetictactoe.field.Field;
 import com.theaigames.ultimatetictactoe.moves.Move;
 import com.theaigames.ultimatetictactoe.moves.MoveResult;
 import com.theaigames.ultimatetictactoe.player.Player;
@@ -35,10 +38,10 @@ public class Processor implements GameHandler {
 	private int mRoundNumber = 1;
 	private List<Player> mPlayers;
 	private List<Move> mMoves;
-	private Board mBoard;
+	private Field mBoard;
 	private int mGameOverByPlayerErrorPlayerId = 0;
 
-	public Processor(List<Player> players, Board field) {
+	public Processor(List<Player> players, Field field) {
 		mPlayers = players;
 		mBoard = field;
 		mMoves = new ArrayList<Move>();
@@ -67,13 +70,12 @@ public class Processor implements GameHandler {
 				MoveResult moveResult = new MoveResult(player, mBoard, player
 						.getId());
 				if (parseResponse(response, player)) {
-					move.setPosition(mBoard.getLastCol(), mBoard
-							.getLastRow());
+					move.setPosition(mBoard.getLastRow(), mBoard.getLastCol());
 					move.setIllegalMove(mBoard.getLastError());
 					mMoves.add(move);
 					moveResult = new MoveResult(player, mBoard, player.getId());
-					moveResult.setPosition(mBoard.getLastCol(), mBoard
-							.getLastRow());
+					moveResult.setPosition(mBoard.getLastRow(), mBoard
+							.getLastCol());
 					moveResult.setIllegalMove(mBoard.getLastError());
 					mMoveResults.add(moveResult);
 				} else {
@@ -84,8 +86,8 @@ public class Processor implements GameHandler {
 					// move.setIllegalMove(mBoard.getLastError() +
 					// " (first try)");
 					// mMoves.add(move);
-					moveResult.setPosition(mBoard.getLastCol(), mBoard
-							.getLastRow());
+					moveResult.setPosition(mBoard.getLastRow(), mBoard
+							.getLastCol());
 					moveResult.setIllegalMove(mBoard.getLastError()
 							+ " (first try)");
 					mMoveResults.add(moveResult);
@@ -98,11 +100,11 @@ public class Processor implements GameHandler {
 						move = new Move(player);
 						moveResult = new MoveResult(player, mBoard, player
 								.getId());
-						move.setPosition(mBoard.getLastCol(), mBoard
-								.getLastRow());
+						move.setPosition(mBoard.getLastRow(), mBoard
+								.getLastCol());
 						mMoves.add(move);
-						moveResult.setPosition(mBoard.getLastCol(),
-								mBoard.getLastRow());
+						moveResult.setPosition(mBoard.getLastRow(), mBoard
+								.getLastCol());
 						mMoveResults.add(moveResult);
 					} else {
 						// move = new Move(player);
@@ -113,8 +115,8 @@ public class Processor implements GameHandler {
 						// move.setIllegalMove(mBoard.getLastError()
 						// + " (second try)");
 						// mMoves.add(move);
-						moveResult.setPosition(mBoard.getLastCol(),
-								mBoard.getLastRow());
+						moveResult.setPosition(mBoard.getLastRow(), mBoard
+								.getLastCol());
 						moveResult.setIllegalMove(mBoard.getLastError()
 								+ " (second try)");
 						mMoveResults.add(moveResult);
@@ -128,11 +130,11 @@ public class Processor implements GameHandler {
 							move = new Move(player);
 							moveResult = new MoveResult(player, mBoard, player
 									.getId());
-							move.setPosition(mBoard.getLastCol(), mBoard
-									.getLastRow());
+							move.setPosition(mBoard.getLastRow(), mBoard
+									.getLastCol());
 							mMoves.add(move);
-							moveResult.setPosition(mBoard.getLastCol(),
-									mBoard.getLastRow());
+							moveResult.setPosition(mBoard.getLastRow(), mBoard
+									.getLastCol());
 							mMoveResults.add(moveResult);
 						} else { /* Too many errors, other player wins */
 							// move = new Move(player);
@@ -143,8 +145,8 @@ public class Processor implements GameHandler {
 							// move.setIllegalMove(mBoard.getLastError()
 							// + " (last try)");
 							// mMoves.add(move);
-							moveResult.setPosition(mBoard.getLastCol(),
-									mBoard.getLastRow());
+							moveResult.setPosition(mBoard.getLastRow(), mBoard
+									.getLastCol());
 							moveResult.setIllegalMove(mBoard.getLastError()
 									+ " (last try)");
 							mMoveResults.add(moveResult);
@@ -213,8 +215,26 @@ public class Processor implements GameHandler {
 
 	@Override
 	public String getPlayedGame() {
-		// export as json but first just dump all the moves
-		if (getWinner() != null) {			
+		// export as json
+		for (MoveResult r : mMoveResults) {
+			try {
+				// write converted json data to a file named "file.json"
+				String jsonDirectory = "."
+						+ File.separator + "data" + File.separator + "fields"
+						+ File.separator;
+				int count = new File(jsonDirectory).listFiles().length;
+				FileWriter writer = new FileWriter(jsonDirectory
+						+ "field-" + count + ".json");
+				writer.write(r.getJsonField());
+				writer.close();
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		System.err.println("Moves: " + mMoves.size());
+		if (getWinner() != null) {
 			return "Conclusion: WINNER " + getWinner().getName() + "\n\n";
 		}
 
@@ -232,7 +252,7 @@ public class Processor implements GameHandler {
 		return mMoves;
 	}
 
-	public Board getField() {
+	public Field getField() {
 		return mBoard;
 	}
 

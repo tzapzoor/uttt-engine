@@ -24,14 +24,14 @@ import java.util.List;
 import com.theaigames.engine.io.IOPlayer;
 import com.theaigames.game.AbstractGame;
 import com.theaigames.game.player.AbstractPlayer;
-import com.theaigames.ultimatetictactoe.board.Board;
+import com.theaigames.ultimatetictactoe.field.Field;
 import com.theaigames.ultimatetictactoe.player.Player;
 
 public class UltimateTicTacToe extends AbstractGame {
     
     private final int TIMEBANK_MAX = 10000;
     private final int TIME_PER_MOVE = 500;
-    private Board mBoard;
+    private Field mBoard;
     private int mBotId = 1;
     
     private List<Player> players;
@@ -43,7 +43,7 @@ public class UltimateTicTacToe extends AbstractGame {
         this.players = new ArrayList<Player>();
         
         // create the playing field
-        this.mBoard = new Board();
+        this.mBoard = new Field();
         
         for(int i=0; i<ioPlayers.size(); i++) {
             // create the player
@@ -86,7 +86,7 @@ public class UltimateTicTacToe extends AbstractGame {
         // DEV_MODE settings
         game.TEST_BOT = "java -cp /home/tzap/work/uttt-test-engine/bots/randomBot/bin bot.BotStarter";
         game.NUM_TEST_BOTS = 2;
-        game.DEV_MODE = true;
+        game.DEV_MODE = false;
         
         game.setupEngine(args);
         game.runEngine();

@@ -17,18 +17,22 @@
 
 package com.theaigames.ultimatetictactoe.moves;
 
+import com.google.gson.Gson;
 import com.theaigames.game.player.AbstractPlayer;
-import com.theaigames.ultimatetictactoe.board.Board;
+import com.theaigames.ultimatetictactoe.field.Field;
 
 public class MoveResult extends Move {
 	private String mBoard;
 	private String mMacroBoard;
 	private int mPlayerId;
+	private String jsonField;
 
-	public MoveResult(AbstractPlayer player, Board field, int playerId) {
+	public MoveResult(AbstractPlayer player, Field field, int playerId) {
 		super(player);
-		mMacroBoard = field.macroBoardString();
+		Gson exporter = new Gson();
+		jsonField = exporter.toJson(field);
 		mBoard = field.toString();
+		mMacroBoard = field.macroBoardString();
 		mPlayerId = playerId;
 	}
 
@@ -42,5 +46,9 @@ public class MoveResult extends Move {
 
 	public int getPlayerId() {
 		return mPlayerId;
+	}
+	
+	public String getJsonField() {
+		return jsonField;
 	}
 }
