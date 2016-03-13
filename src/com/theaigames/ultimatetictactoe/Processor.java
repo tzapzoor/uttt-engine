@@ -198,18 +198,18 @@ public class Processor implements GameHandler {
 	@Override
 	public String getPlayedGame() {
 		// export as json
+		int count = 0;
 		for (MoveResult r : mMoveResults) {
 			try {
 				// write converted json data to a file named "file.json"
 				String jsonDirectory = "."
 						+ File.separator + "data" + File.separator + "fields"
 						+ File.separator;
-				int count = new File(jsonDirectory).listFiles().length;
 				FileWriter writer = new FileWriter(jsonDirectory
 						+ "field-" + count + ".json");
 				writer.write(r.getJsonField());
 				writer.close();
-
+				count++;
 			} catch (IOException e) {
 				// e.printStackTrace();
 			}
