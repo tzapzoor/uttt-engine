@@ -22,8 +22,8 @@ import com.theaigames.game.player.AbstractPlayer;
 
 public class Move extends AbstractMove {
 
-	private int mMiniBoard = 0;
-	private int mCell = 0;
+	private int mCol = 0;
+	private int mRow = 0;
 
 	public Move(AbstractPlayer player) {
 		super(player);
@@ -33,19 +33,19 @@ public class Move extends AbstractMove {
 	 * @param column
 	 *            : Sets the column of a move
 	 */
-	public void setPosition(int miniBoard, int cell) {
-		this.mMiniBoard = miniBoard;
-		this.mCell = cell;
+	public void setPosition(int col, int row) {
+		this.mCol = col;
+		this.mRow = row;
 	}
 
 	/**
 	 * @return : Column of move
 	 */
-	public int getCell() {
-		return mCell;
+	public int getRow() {
+		return mRow;
 	}
 
-	public int getMiniBoard() {
-		return mMiniBoard;
+	public int getCol() {
+		return mCol;
 	}
 }

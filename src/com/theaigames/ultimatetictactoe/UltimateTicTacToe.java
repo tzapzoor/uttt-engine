@@ -38,8 +38,8 @@ public class UltimateTicTacToe extends AbstractGame {
     
 
     @Override
-    public void setupGame(ArrayList<IOPlayer> ioPlayers) throws Exception {         
-        // create all the players and everything they need
+    public void setupGame(ArrayList<IOPlayer> ioPlayers) throws Exception {    	
+    	// create all the players and everything they need
         this.players = new ArrayList<Player>();
         
         // create the playing field

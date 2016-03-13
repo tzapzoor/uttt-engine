@@ -19,41 +19,34 @@ package com.theaigames.ultimatetictactoe.board;
 
 public class Board {
 
-	public final int CELLS = 9;
+	public final int COLS = 3;
+	public final int ROWS = 3;
 
-	/*
-	 * mBoard[miniboard(0-8)][cell(0-8)] -> {0, 1, 2} 0 -> cell is empty 1 ->
-	 * player1 owns this cell 2 -> player2 owns this cell
-	 */
 	private int[][] mBoard;
-
-	/*
-	 * mMacroBoard[miniboard(0-8)] = {-1, 0, 1, 2} -1 -> the current player must
-	 * play in this mini board 0 -> the mini board is a draw 1 -> the mini board
-	 * is won by player1 2 -> the mini board is won by player2
-	 */
-	private int[] mMacroBoard;
+	private int[][] mMacroBoard;
 
 	public String mLastError = "";
-	private int mLastMiniBoard = 0;
-	private int mLastCell = 0;
+	private int mLastCol = 0;
+	private int mLastRow = 0;
 
 	public Board() {
-		mBoard = new int[CELLS][CELLS];
-		mMacroBoard = new int[CELLS];
+		mBoard = new int[ROWS * COLS][ROWS * COLS];
+		mMacroBoard = new int[ROWS][COLS];
 		clearBoard();
 	}
 
 	public void clearBoard() {
-		for (int x = 0; x < CELLS; x++) {
-			for (int y = 0; y < CELLS; y++) {
-				mBoard[x][y] = 0;
+		for (int i = 0; i < ROWS * COLS; i++) {
+			for (int j = 0; j < ROWS * COLS; j++) {
+				mBoard[i][j] = 0;
 			}
 		}
 
 		// the first player can choose any mini board to play in
-		for (int x = 0; x < CELLS; x++) {
-			mMacroBoard[x] = -1;
+		for (int i = 0; i < ROWS; i++) {
+			for (int j = 0; j < COLS; j++) {
+				mMacroBoard[i][j] = -1;
+			}
 		}
 	}
 
@@ -61,29 +54,28 @@ public class Board {
 	 * Used for "pretty printing" the board
 	 */
 	public void dumpBoard() {
-		for (int x = 0; x < CELLS; x++) {
+		for (int x = 0; x < ROWS * COLS; x++) {
 			System.out.print("--");
 		}
-		System.out.println("\n");
-		for (int x = 0; x < CELLS; x++) {
-			System.out.println(mMacroBoard[x]);
-			if (x < CELLS - 1) {
-				System.out.println(",");
-			}
-		}
-		System.out.println("\n");
-		for (int x = 0; x < CELLS; x++) {
-			System.out.print("--");
-		}
-		System.out.print("\n");
-		for (int y = 0; y < CELLS; y++) {
-			for (int x = 0; x < CELLS; x++) {
-				System.out.print(mBoard[x][y]);
-				if (x < CELLS - 1) {
+		System.out.println();
+		for (int i = 0; i < ROWS; i++) {
+			for (int j = 0; j < COLS; j++) {
+				System.out.print(mMacroBoard[i][j]);
+				if (i < ROWS - 1 || j < COLS - 1) {
 					System.out.print(",");
 				}
 			}
-			System.out.print("\n");
+		}
+		System.out.println();
+		for (int x = 0; x < ROWS * COLS; x++) {
+			System.out.print("--");
+		}
+		System.out.println();
+		for (int i = 0; i < ROWS * COLS; i++) {
+			for (int j = 0; j < ROWS * COLS; j++) {
+				System.out.print(mBoard[i][j] + " ");
+			}
+			System.out.println();
 		}
 	}
 
@@ -94,60 +86,111 @@ public class Board {
 		return String.format("%1$-" + n + "s", s);
 	}
 
-	private int isWon(int[] board) {
+	private int boardIsWon(int rowBegin, int colBegin, int[][] board) {
+		int colEnd = colBegin + COLS;
+		int rowEnd = rowBegin + ROWS;
+
 		// check horizontal lines
 		int player;
-		for (int i = 0; i < 3; i++) {
-			player = board[3 * i];
-			if (player > 0
-					&& ((board[3 * i] == board[3 * i + 1]) && (board[3 * i + 1] == board[3 * i + 2]))) {
-				return player;
+		for (int i = rowBegin; i < rowEnd; i++) {
+			player = board[i][colBegin];
+			if (board[i][colBegin] == board[i][colBegin + 1]
+					&& board[i][colBegin + 1] == board[i][colBegin + 2]) {
+				if (player > 0) {
+					return player;
+				}
 			}
 		}
+
 		// check vertical lines
-		for (int i = 0; i < 3; i++) {
-			player = board[i];
-			if (player > 0
-					&& ((board[i] == board[i + 3]) && (board[i + 3] == board[i + 6]))) {
+		for (int i = colBegin; i < colEnd; i++) {
+			player = board[rowBegin][i];
+			if (board[rowBegin][i] == board[rowBegin + 1][i]
+					&& board[rowBegin + 1][i] == board[rowBegin + 2][i]) {
+				if (player > 0) {
+					return player;
+				}
+			}
+		}
+
+		// check diagonals
+		player = board[rowBegin][colBegin];
+		if (board[rowBegin][colBegin] == board[rowBegin + 1][colBegin + 1]
+				&& board[rowBegin + 1][colBegin + 1] == board[rowBegin + 2][colBegin + 2]) {
+			if (player > 0) {
 				return player;
 			}
 		}
-		// check diagonals
-		player = board[0];
-		if (player > 0 && (board[0] == board[4]) && (board[4] == board[8])) {
-			return player;
-		}
-		player = board[2];
-		if (player > 0 && (board[2] == board[4]) && (board[4] == board[6])) {
-			return player;
+
+		player = board[rowBegin][colEnd - 1];
+		if (board[rowBegin][colEnd - 1] == board[rowBegin + 1][colEnd - 2]
+				&& board[rowBegin + 1][colEnd - 2] == board[rowBegin + 2][colEnd - 3]) {
+			if (player > 0) {
+				return player;
+			}
 		}
 
-		// check if the board has any empty cells
-		for (int i = 0; i < CELLS; i++) {
-			if (board[i] == 0)
-				return 0;
-		}
-
-		return -1;
+		return 0;
 	}
 
-	private void updateMacroBoard(int miniBoard, int cell) {
+	private boolean miniBoardIsFull(int row, int col) {
+		int rowBegin = ((int) row / ROWS) * ROWS;
+		int rowEnd = rowBegin + ROWS;
+		int colBegin = ((int) col / COLS) * COLS;
+		int colEnd = colBegin + COLS;
+		for (int i = rowBegin; i < rowEnd; i++) {
+			for (int j = colBegin; j < colEnd; j++) {
+				if (mBoard[i][j] == 0) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/* To hardcode or not to hardcode, this is the question...*/
+	private int getNextIndex(int currentIndex) {
+		int begin = ((int) currentIndex / ROWS) * ROWS;
+		if (currentIndex == begin) {
+			return 0;
+		} else if (currentIndex == begin + 1) {
+			return 3;
+		}
+		return 6;
+	}
+
+	private void updateMacroBoard(int row, int col) {
+		// make active miniboards inactive
+		for (int i = 0; i < ROWS; i++) {
+			for (int j = 0; j < COLS; j++) {
+				if (mMacroBoard[i][j] == -1) {
+					mMacroBoard[i][j] = 0;
+				}
+			}
+		}
+
 		// check if current miniboard has a winner
-		int player = isWon(mBoard[miniBoard]);
+		int player = boardIsWon(((int) row / ROWS) * ROWS, ((int) col / COLS) * COLS,
+				mBoard);
 		if (player > 0) {
-			mMacroBoard[miniBoard] = player;
+			mMacroBoard[(int) row / ROWS][(int) col / COLS] = player;
 		}
 
 		// check if the next miniboard is full or is already decided
-		player = isWon(mBoard[cell]);
-		if (player == -1 || player > 0) {
-			for (int i = 0; i < CELLS; i++) {
-				if (mMacroBoard[i] == 0 && isWon(mBoard[i]) == 0) {
-					mMacroBoard[i] = -1;
+		int nextRow = getNextIndex(row);
+		int nextCol = getNextIndex(col);
+		if (mMacroBoard[(int) nextRow / ROWS][(int) nextCol / COLS] == 0
+				|| miniBoardIsFull(nextRow, nextCol)) {
+			for (int i = 0; i < ROWS; i++) {
+				for (int j = 0; j < COLS; j++) {
+					if (mMacroBoard[i][j] == 0
+							&& !miniBoardIsFull(ROWS * i, COLS * j)) {
+						mMacroBoard[i][j] = -1;
+					}
 				}
 			}
 		} else {
-			mMacroBoard[cell] = -1;
+			mMacroBoard[(int) nextRow / ROWS][(int) nextCol / COLS] = -1;
 		}
 	}
 
@@ -156,30 +199,29 @@ public class Board {
 	 * 
 	 * @return : true if the move is valid, otherwise false
 	 */
-	public Boolean placeMove(int miniBoard, int cell, int player) {
+	public Boolean placeMove(int row, int col, int player) {
 		mLastError = "";
-		mLastMiniBoard = miniBoard;
-		mLastCell = cell;
+		mLastCol = col;
+		mLastRow = row;
 
-		if ((miniBoard >= 0 && miniBoard < CELLS)
-				&& (cell >= 0 && cell < CELLS)) {
-			if (mMacroBoard[miniBoard] == -1) {
-				if (mBoard[miniBoard][cell] == 0) {
-					mBoard[miniBoard][cell] = player;
-					updateMacroBoard(miniBoard, cell);
+		if ((col >= 0 && col < ROWS * COLS) && (row >= 0 && row < ROWS * COLS)) {
+			if (mMacroBoard[(int) row / ROWS][(int) col / COLS] == -1) {
+				if (mBoard[row][col] == 0) {
+					mBoard[row][col] = player;
+					updateMacroBoard(row, col);
 					return true;
 				} else {
-					mLastError = "Cell already occupied (" + miniBoard + ", "
-							+ cell + ").";
+					mLastError = "Cell already occupied ("
+							+ row + ", " + col + ").";
 				}
 			} else {
-				mLastError = "Played in the wrong mini board (" + miniBoard
-						+ ")";
+				mLastError = "Played in the wrong mini board ("
+						+ row / ROWS + ", " + col / COLS + ")";
 			}
 		} else {
-			mLastError = "Move out of bounds. (" + miniBoard + ", " + cell
-					+ ")";
+			mLastError = "Move out of bounds. (" + row + ", " + col + ")";
 		}
+		System.out.println(mLastError);
 		return false;
 	}
 
@@ -201,12 +243,12 @@ public class Board {
 	 *            :
 	 * @return : last inserted column
 	 */
-	public int getLastMiniBoard() {
-		return mLastMiniBoard;
+	public int getLastCol() {
+		return mLastCol;
 	}
 
-	public int getLastCell() {
-		return mLastCell;
+	public int getLastRow() {
+		return mLastRow;
 	}
 
 	@Override
@@ -217,10 +259,10 @@ public class Board {
 	 */
 	public String toString() {
 		String r = "";
-		for (int y = 0; y < CELLS; y++) {
-			for (int x = 0; x < CELLS; x++) {
-				r += mBoard[x][y];
-				if (y != CELLS - 1 || x != CELLS - 1) {
+		for (int i = 0; i < ROWS * COLS; i++) {
+			for (int j = 0; j < ROWS * COLS; j++) {
+				r += mBoard[i][j];
+				if (i != ROWS * COLS - 1 || j != ROWS * COLS - 1) {
 					r += ",";
 				}
 			}
@@ -230,10 +272,12 @@ public class Board {
 
 	public String macroBoardString() {
 		String r = "";
-		for (int x = 0; x < CELLS; x++) {
-			r += mMacroBoard[x];
-			if (x < CELLS - 1) {
-				r += ",";
+		for (int i = 0; i < ROWS; i++) {
+			for (int j = 0; j < COLS; j++) {
+				r += mMacroBoard[i][j];
+				if (i != ROWS - 1 || j != COLS - 1) {
+					r += ",";
+				}
 			}
 		}
 		return r;
@@ -247,6 +291,18 @@ public class Board {
 	 * @return : Returns player id if there is a winner, otherwise returns 0.
 	 */
 	public int getWinner() {
-		return isWon(mMacroBoard);
+		// check if macroboard has a winner
+		return boardIsWon(0, 0, mMacroBoard);
+	}
+
+	public boolean isFull() {
+		for (int i = 0; i < ROWS; i++) {
+			for (int j = 0; j < COLS; j++) {
+				if (mMacroBoard[i][j] <= 0 && !miniBoardIsFull(ROWS * i, COLS * j)) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }

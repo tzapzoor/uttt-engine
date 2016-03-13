@@ -64,80 +64,87 @@ public class Processor implements GameHandler {
 			if (getWinner() == null) {
 				String response = player.requestMove("move");
 				Move move = new Move(player);
-				MoveResult moveResult = new MoveResult(player, mBoard,
-						player.getId());
+				MoveResult moveResult = new MoveResult(player, mBoard, player
+						.getId());
 				if (parseResponse(response, player)) {
-					move.setPosition(mBoard.getLastMiniBoard(),
-							mBoard.getLastCell());
+					move.setPosition(mBoard.getLastCol(), mBoard
+							.getLastRow());
 					move.setIllegalMove(mBoard.getLastError());
 					mMoves.add(move);
 					moveResult = new MoveResult(player, mBoard, player.getId());
-					moveResult.setPosition(mBoard.getLastMiniBoard(),
-							mBoard.getLastCell());
+					moveResult.setPosition(mBoard.getLastCol(), mBoard
+							.getLastRow());
 					moveResult.setIllegalMove(mBoard.getLastError());
 					mMoveResults.add(moveResult);
 				} else {
-					move = new Move(player);
+					// move = new Move(player);
 					moveResult = new MoveResult(player, mBoard, player.getId());
-					move.setPosition(mBoard.getLastMiniBoard(),
-							mBoard.getLastCell());
-					move.setIllegalMove(mBoard.getLastError() + " (first try)");
-					mMoves.add(move);
-					moveResult.setPosition(mBoard.getLastMiniBoard(),
-							mBoard.getLastCell());
+					// move.setPosition(mBoard.getLastMiniBoard(),
+					// mBoard.getLastCell());
+					// move.setIllegalMove(mBoard.getLastError() +
+					// " (first try)");
+					// mMoves.add(move);
+					moveResult.setPosition(mBoard.getLastCol(), mBoard
+							.getLastRow());
 					moveResult.setIllegalMove(mBoard.getLastError()
 							+ " (first try)");
 					mMoveResults.add(moveResult);
+
 					player.sendUpdate("field", mBoard.toString());
 					player.sendUpdate("macroboard", mBoard.macroBoardString());
 					response = player.requestMove("move");
+
 					if (parseResponse(response, player)) {
 						move = new Move(player);
-						moveResult = new MoveResult(player, mBoard,
-								player.getId());
-						move.setPosition(mBoard.getLastMiniBoard(),
-								mBoard.getLastCell());
+						moveResult = new MoveResult(player, mBoard, player
+								.getId());
+						move.setPosition(mBoard.getLastCol(), mBoard
+								.getLastRow());
 						mMoves.add(move);
-						moveResult.setPosition(mBoard.getLastMiniBoard(),
-								mBoard.getLastCell());
+						moveResult.setPosition(mBoard.getLastCol(),
+								mBoard.getLastRow());
 						mMoveResults.add(moveResult);
 					} else {
-						move = new Move(player);
-						moveResult = new MoveResult(player, mBoard,
-								player.getId());
-						move.setPosition(mBoard.getLastMiniBoard(),
-								mBoard.getLastCell());
-						move.setIllegalMove(mBoard.getLastError()
-								+ " (second try)");
-						mMoves.add(move);
-						moveResult.setPosition(mBoard.getLastMiniBoard(),
-								mBoard.getLastCell());
+						// move = new Move(player);
+						moveResult = new MoveResult(player, mBoard, player
+								.getId());
+						// move.setPosition(mBoard.getLastMiniBoard(),
+						// mBoard.getLastCell());
+						// move.setIllegalMove(mBoard.getLastError()
+						// + " (second try)");
+						// mMoves.add(move);
+						moveResult.setPosition(mBoard.getLastCol(),
+								mBoard.getLastRow());
 						moveResult.setIllegalMove(mBoard.getLastError()
 								+ " (second try)");
 						mMoveResults.add(moveResult);
+
 						player.sendUpdate("field", mBoard.toString());
+						player.sendUpdate("macroboard", mBoard
+								.macroBoardString());
 						response = player.requestMove("move");
+
 						if (parseResponse(response, player)) {
 							move = new Move(player);
-							moveResult = new MoveResult(player, mBoard,
-									player.getId());
-							move.setPosition(mBoard.getLastMiniBoard(),
-									mBoard.getLastCell());
+							moveResult = new MoveResult(player, mBoard, player
+									.getId());
+							move.setPosition(mBoard.getLastCol(), mBoard
+									.getLastRow());
 							mMoves.add(move);
-							moveResult.setPosition(mBoard.getLastMiniBoard(),
-									mBoard.getLastCell());
+							moveResult.setPosition(mBoard.getLastCol(),
+									mBoard.getLastRow());
 							mMoveResults.add(moveResult);
 						} else { /* Too many errors, other player wins */
-							move = new Move(player);
-							moveResult = new MoveResult(player, mBoard,
-									player.getId());
-							move.setPosition(mBoard.getLastMiniBoard(),
-									mBoard.getLastCell());
-							move.setIllegalMove(mBoard.getLastError()
-									+ " (last try)");
-							mMoves.add(move);
-							moveResult.setPosition(mBoard.getLastMiniBoard(),
-									mBoard.getLastCell());
+							// move = new Move(player);
+							moveResult = new MoveResult(player, mBoard, player
+									.getId());
+							// move.setPosition(mBoard.getLastMiniBoard(),
+							// mBoard.getLastCell());
+							// move.setIllegalMove(mBoard.getLastError()
+							// + " (last try)");
+							// mMoves.add(move);
+							moveResult.setPosition(mBoard.getLastCol(),
+									mBoard.getLastRow());
 							moveResult.setIllegalMove(mBoard.getLastError()
 									+ " (last try)");
 							mMoveResults.add(moveResult);
@@ -164,9 +171,9 @@ public class Processor implements GameHandler {
 	private Boolean parseResponse(String r, Player player) {
 		String[] parts = r.split(" ");
 		if (parts.length >= 3 && parts[0].equals("place_move")) {
-			int miniBoard = Integer.parseInt(parts[1]);
-			int cell = Integer.parseInt(parts[2]);
-			if (mBoard.placeMove(miniBoard, cell, player.getId())) {
+			int col = Integer.parseInt(parts[1]);
+			int row = Integer.parseInt(parts[2]);
+			if (mBoard.placeMove(row, col, player.getId())) {
 				return true;
 			}
 		}
@@ -206,7 +213,12 @@ public class Processor implements GameHandler {
 
 	@Override
 	public String getPlayedGame() {
-		return "Winner is: " + getWinner().getName();
+		// export as json but first just dump all the moves
+		if (getWinner() != null) {			
+			return "Conclusion: WINNER " + getWinner().getName() + "\n\n";
+		}
+
+		return "Conclusion: DRAW\n\n";
 	}
 
 	/**
@@ -226,6 +238,6 @@ public class Processor implements GameHandler {
 
 	@Override
 	public boolean isGameOver() {
-		return (getWinner() != null);
+		return (getWinner() != null) || (mBoard.isFull());
 	}
 }
