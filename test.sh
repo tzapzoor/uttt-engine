@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "Clear exported data from ./data/fields/*"
+rm -rf data/fields/* > /dev/null 2>&1
+touch data/fields/_placeholder_
+
 stderr="err.txt"
 stdout="out.txt"
 

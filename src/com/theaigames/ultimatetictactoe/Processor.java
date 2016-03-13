@@ -64,7 +64,7 @@ public class Processor implements GameHandler {
 			player.sendUpdate("field", mBoard.toString());
 			player.sendUpdate("macroboard", mBoard.macroBoardString());
 
-			if (getWinner() == null) {
+			if (getWinner() == null && !mBoard.isFull()) {
 				String response = player.requestMove("move");
 				Move move = new Move(player);
 				MoveResult moveResult = new MoveResult(player, mBoard, player
@@ -233,7 +233,7 @@ public class Processor implements GameHandler {
 			}
 		}
 
-		System.err.println("Moves: " + mMoves.size());
+		// System.err.println("Moves: " + mMoves.size());
 		if (getWinner() != null) {
 			return "Conclusion: WINNER " + getWinner().getName() + "\n\n";
 		}

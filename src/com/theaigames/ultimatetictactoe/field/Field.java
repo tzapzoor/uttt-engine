@@ -18,6 +18,7 @@
 package com.theaigames.ultimatetictactoe.field;
 
 public class Field {
+
 	// should ignore
 	private int mRoundNr;
 	private int mMoveNr;
@@ -298,15 +299,17 @@ public class Field {
 		return boardIsWon(0, 0, mMacroboard);
 	}
 
+	/* might be buuggy */
 	public boolean isFull() {
+		System.err.println("Calling field.isFull()");
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 0; j < COLS; j++) {
-				if (mMacroboard[i][j] <= 0
-						&& !miniBoardIsFull(ROWS * i, COLS * j)) {
+				if (mMacroboard[i][j] == -1) {
 					return false;
 				}
 			}
 		}
+		System.err.println("Field is full. Must end as a draw!");
 		return true;
 	}
 }

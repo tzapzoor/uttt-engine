@@ -47,7 +47,7 @@ public class MoveResult extends Move {
 	public int getPlayerId() {
 		return mPlayerId;
 	}
-	
+
 	public String getJsonField() {
 		return jsonField;
 	}
