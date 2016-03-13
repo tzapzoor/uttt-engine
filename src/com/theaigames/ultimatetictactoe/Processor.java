@@ -206,7 +206,7 @@ public class Processor implements GameHandler {
 
 	@Override
 	public String getPlayedGame() {
-		return "";
+		return "Winner is: " + getWinner().getName();
 	}
 
 	/**

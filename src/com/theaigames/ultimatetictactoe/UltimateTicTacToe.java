@@ -80,16 +80,15 @@ public class UltimateTicTacToe extends AbstractGame {
     
     // DEV_MODE can be turned on to easily test the
     // engine from eclipse
-    public static void main(String args[]) throws Exception {
-        
+    public static void main(String args[]) throws Exception {    
     	UltimateTicTacToe game = new UltimateTicTacToe();
     	
         // DEV_MODE settings
-        game.TEST_BOT = "java -cp /home/jim/workspace/fourinarow-starterbot-java/bin/ bot.BotStarter";
+        game.TEST_BOT = "java -cp /home/tzap/work/uttt-test-engine/bots/randomBot/bin bot.BotStarter";
         game.NUM_TEST_BOTS = 2;
-        game.DEV_MODE = false;
+        game.DEV_MODE = true;
         
-        //game.setupEngine(args);
-        //game.runEngine();
+        game.setupEngine(args);
+        game.runEngine();
     }
 }

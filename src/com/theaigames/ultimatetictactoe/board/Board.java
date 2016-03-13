@@ -220,7 +220,7 @@ public class Board {
 		for (int y = 0; y < CELLS; y++) {
 			for (int x = 0; x < CELLS; x++) {
 				r += mBoard[x][y];
-				if (y < CELLS - 1) {
+				if (y != CELLS - 1 || x != CELLS - 1) {
 					r += ",";
 				}
 			}
