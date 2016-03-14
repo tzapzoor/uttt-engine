@@ -14,6 +14,7 @@ then
     echo "Running game..."
     java -cp bin/:./GSON/* com.theaigames.ultimatetictactoe.UltimateTicTacToe $1 $2 2> $stderr 1> $stdout
     echo "Done. Check out "$stderr" and "$stdout"."
+    cat $stdout
 else
     echo "Usage "$0" [bot1] [bot2]"
 fi
