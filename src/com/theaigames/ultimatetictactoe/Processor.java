@@ -140,9 +140,9 @@ public class Processor implements GameHandler {
 				player.sendUpdate("field", mBoard.toString());
 				player.sendUpdate("macroboard", mBoard.macroBoardString());
 
-				mRoundNumber++;
 			}
 		}
+		mRoundNumber++;
 	}
 
 	/**
@@ -202,7 +202,7 @@ public class Processor implements GameHandler {
 		for (MoveResult r : mMoveResults) {
 			try {
 				// write converted json data to a file named "file.json"
-				String jsonDirectory = "."
+				String jsonDirectory = "." + File.separator + "PA Viewer"
 						+ File.separator + "data" + File.separator + "fields"
 						+ File.separator;
 				FileWriter writer = new FileWriter(jsonDirectory
@@ -211,7 +211,7 @@ public class Processor implements GameHandler {
 				writer.close();
 				count++;
 			} catch (IOException e) {
-				// e.printStackTrace();
+				e.printStackTrace();
 			}
 		}
 
@@ -219,7 +219,7 @@ public class Processor implements GameHandler {
 			return "Conclusion: WINNER " + getWinner().getName() + "\n\n";
 		}
 
-		return "Conclusion: DRAW\n\n";
+		return "Conclusion: WINNER DRAW\n\n";
 	}
 
 	/**

@@ -6,4 +6,4 @@ bin/
 err.txt
 out.txt
 bots/*bin/
-data/*/*.json
+*.json

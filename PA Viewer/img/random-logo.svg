@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" height="280.0" width="280.0" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+    <rect height="100%" width="100%" fill="#ecf0f1" />
+    <g transform="translate(20.0,20.0)">
+        <g height="110.0" width="110.0">
+            <rect height="110.0" width="50.0" opacity="1" fill="#e31028" />
+            <rect height="33.333333333333336" width="100.0" opacity="1" fill="#5be950" x="10.0" y="38.33333333333333" />
+            <rect height="110.0" width="50.0" opacity="1" fill="#e0ae3c" x="60.0" />
+        </g>
+    </g>
+    <g transform="translate(150.0,20.0)">
+        <g height="110.0" width="110.0">
+            <polygon points="0,110.0 110.0,110.0 55.0,0" opacity="1" fill="#e0ae3c" />
+            <polygon points="20.0,110.0 90.0,110.0 55.0,40.0" opacity="1" fill="#e0ae3c" />
+        </g>
+    </g>
+    <g transform="translate(20.0,150.0)">
+        <g height="110.0" width="110.0">
+            <path opacity="1" d="M 99.49593469062211,22.671811123913976 A 55.0,55.0 0 1 0 33.95241121992003 105.81337428812076 Z" fill="#5be950" />
+            <g transform="translate(0,110.0) scale(1,-1)">
+                <path opacity="1" d="M 99.49593469062211,22.671811123913976 A 55.0,55.0 0 1 0 33.95241121992003 105.81337428812076 Z" fill="#e0ae3c" />
+            </g>
+        </g>
+    </g>
+    <g transform="translate(150.0,150.0)">
+        <g height="110.0" width="110.0">
+            <polygon points="0,110.0 0,0 110.0,0 50.0,110.0" opacity="1" fill="#e31028" />
+            <polygon points="0,0 0,110.0 110.0,110.0 50.0,0" opacity="1" fill="#e0ae3c" />
+        </g>
+    </g>
+</svg>
