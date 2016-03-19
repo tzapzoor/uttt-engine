@@ -1,8 +1,10 @@
-PAViewer.controller('mainControl', ['$scope', '$route', '$location', function($scope, $route, $location) {
+PAViewer.controller('mainControl', ['$scope', '$rootScope','$route', '$location', function($scope, $rootScope, $route, $location) {
 
     $scope.isInitialized = false;
-    $scope.fields = [];
+    $rootScope.fields = [];
     $scope.minimax = [];
+    $rootScope.currentMove = 0;
+    $rootScope.field = {};
 
     $scope.Init = function(){
         crtFieldIndex = 0;
@@ -15,7 +17,7 @@ PAViewer.controller('mainControl', ['$scope', '$route', '$location', function($s
                 async: false,
                 url: "data/fields/field-" + crtFieldIndex + '.json',
                 success: function(data, error) {
-                    $scope.fields.push(data);
+                    $rootScope.fields.push(data);
                     crtFieldIndex++;
                 },
                 error: function(error) {
@@ -24,6 +26,7 @@ PAViewer.controller('mainControl', ['$scope', '$route', '$location', function($s
                 }
             });
         }
+        $rootScope.field = $rootScope.fields[$rootScope.currentMove];
 
         crtFieldIndex = 0;
         hasReachedEnd = false;
@@ -65,6 +68,20 @@ PAViewer.controller('mainControl', ['$scope', '$route', '$location', function($s
     $scope.getNumberList = function(num) {
         return new Array(num);
     }
+
+    $scope.keyup = function(keyCode) {
+        if ($scope.fields.length > 0) {
+            switch (keyCode) {
+                case 190:
+                    $scope.currentMove = ($scope.currentMove + 1) % $scope.fields.length;
+                    break;
+                case 188:
+                    $scope.currentMove = ($scope.currentMove - 1) % $scope.fields.length;
+                    $scope.currentMove = ($scope.currentMove < 0) ? 0 : $scope.currentMove;
+                    break;
+            }
+            $scope.field = $scope.fields[$scope.currentMove];
+        }
+    };
+
 }]);
-
-

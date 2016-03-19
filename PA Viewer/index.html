@@ -19,7 +19,7 @@
 
     <script src="js/bootstrap.min.js"></script>
 </head>
-    <body ng-app="PAViewer" ng-controller="mainControl">
+    <body ng-app="PAViewer" ng-controller="mainControl" ng-keyup="keyup($event.keyCode)">
         <h1 style="text-align: center; margin-top:20px;">PA Viewer</h1>
         <div ng-view=""></div>
     </body>

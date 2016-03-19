@@ -7,9 +7,9 @@ touch ./PA\ Viewer/data/fields/_placeholder_
 stderr="err.txt"
 stdout="out.txt"
 bot1="../ultimate-tic-tac-toe-bot/run_heur2.sh"
-bot2="../ultimate-tic-tac-toe-bot/run.sh"
+bot2="./bots/randomBot/run.sh"
 
-numGames=1
+numGames=20
 numWins1=0
 numWins2=0
 numDraws=0
