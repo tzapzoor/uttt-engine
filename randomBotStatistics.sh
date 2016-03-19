@@ -6,8 +6,8 @@ touch "PA Viewer/data/fields/_placeholder_"
 
 stderr="err.txt"
 stdout="out.txt"
-bot2="../ultimate-tic-tac-toe-bot/run_heur2.sh"
-bot1="../ultimate-tic-tac-toe-bot/run.sh"
+bot1="../ultimate-tic-tac-toe-bot/run_heur2.sh"
+bot2="../ultimate-tic-tac-toe-bot/run.sh"
 
 numGames=1
 numWins1=0

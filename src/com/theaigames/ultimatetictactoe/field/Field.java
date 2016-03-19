@@ -21,14 +21,14 @@ public class Field {
 
 	// should ignore. these members were added here
 	// for exporting to json
-	private int mRoundNr = 1;
-	private int mMoveNr = 1;
+	public int mRoundNr = 1;
+	public int mMoveNr = 1;
 
 	private int[][] mBoard;
 	private int[][] mMacroboard;
 
 	public final int COLS = 3, ROWS = 3;
-	public String mLastError = "";
+	transient public String mLastError = "";
 
 	transient private int mLastCol = 0;
 	transient private int mLastRow = 0;

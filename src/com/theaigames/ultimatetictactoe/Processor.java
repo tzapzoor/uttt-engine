@@ -59,6 +59,8 @@ public class Processor implements GameHandler {
 	public void playRound(int roundNumber) {
 		for (Player player : mPlayers) {
 
+			this.mBoard.mRoundNr = mRoundNumber;
+			this.mBoard.mMoveNr = mMoves.size();
 			player.sendUpdate("round", mRoundNumber);
 			player.sendUpdate("move", mMoves.size());
 			player.sendUpdate("field", mBoard.toString());
@@ -202,9 +204,9 @@ public class Processor implements GameHandler {
 		for (MoveResult r : mMoveResults) {
 			try {
 				// write converted json data to a file named "file.json"
-				String jsonDirectory = "." + File.separator + "PA Viewer"
-						+ File.separator + "data" + File.separator + "fields"
-						+ File.separator;
+				String jsonDirectory = "."
+						+ File.separator + "PA Viewer" + File.separator
+						+ "data" + File.separator + "fields" + File.separator;
 				FileWriter writer = new FileWriter(jsonDirectory
 						+ "field-" + count + ".json");
 				writer.write(r.getJsonField());
