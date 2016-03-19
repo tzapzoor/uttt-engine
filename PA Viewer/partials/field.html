@@ -36,6 +36,10 @@ body {
     background-color: #A64242;
 }
 
+.table-bordered > tbody > tr > td.playNext {
+    background-color: gray;
+}
+
 </style>
 
 <div ng-init="Init()"></div>
@@ -53,7 +57,9 @@ body {
                             <table class="table table-bordered table-hover" style="width: 320px;table-layout: fixed;">
                                 <tr ng-repeat="(rowIndex, row) in field.mBoard track by $index" style="height:43px; width: 320px;">
                                     <td ng-repeat="(colIndex, value) in row track by $index"
-                                            ng-class="{'wino' : field.mMacroboard[toInt(rowIndex/3)][toInt(colIndex/3)] == 1, 'winx' : field.mMacroboard[toInt(rowIndex/3)][toInt(colIndex/3)] == 2}">
+                                            ng-class="{'wino' : field.mMacroboard[toInt(rowIndex/3)][toInt(colIndex/3)] == 1,
+                                                'winx' : field.mMacroboard[toInt(rowIndex/3)][toInt(colIndex/3)] == 2,
+                                                'playNext': field.mMacroboard[toInt(rowIndex/3)][toInt(colIndex/3)] == -1}">
                                         <div style="" ng-if="value > 0">
                                         <span ng-if="value == 1">
                                             <font color="#FF5552" size="4px"><b>O</b></font>

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo "Clear exported data from ./PA Viewer/data/fields/*"
-rm -rf "PA Viewer/data/fields/*" > /dev/null 2>&1
-touch "PA Viewer/data/fields/_placeholder_"
+rm ./PA\ Viewer/data/fields/*
+touch ./PA\ Viewer/data/fields/_placeholder_
 
 stderr="err.txt"
 stdout="out.txt"

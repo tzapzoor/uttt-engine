@@ -173,6 +173,10 @@ public class Field {
 			}
 		}
 
+		if (this.getWinner() > 0) {
+			return;
+		}
+
 		// check if current miniboard has a winner
 		int player = boardIsWon(((int) row / ROWS) * ROWS, ((int) col / COLS)
 				* COLS, mBoard);
