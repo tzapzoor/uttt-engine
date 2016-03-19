@@ -1,4 +1,4 @@
-PAViewer.controller('mainControl', ['$scope', '$rootScope','$route', '$location', function($scope, $rootScope, $route, $location) {
+Viewer.controller('mainControl', ['$scope', '$rootScope','$route', '$location', function($scope, $rootScope, $route, $location) {
 
     $scope.isInitialized = false;
     $rootScope.fields = [];

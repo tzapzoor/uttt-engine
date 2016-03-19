@@ -1,4 +1,4 @@
-PAViewer.config( function( $routeProvider, $locationProvider ) {
+Viewer.config( function( $routeProvider, $locationProvider ) {
 
     $routeProvider.when('/', {
         templateUrl: 'partials/field.html',
