@@ -205,7 +205,7 @@ public class Processor implements GameHandler {
 			try {
 				// write converted json data to a file named "file.json"
 				String jsonDirectory = "."
-						+ File.separator + "PA Viewer" + File.separator
+						+ File.separator + "Viewer" + File.separator
 						+ "data" + File.separator + "fields" + File.separator;
 				FileWriter writer = new FileWriter(jsonDirectory
 						+ "field-" + count + ".json");

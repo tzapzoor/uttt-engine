@@ -1,15 +1,15 @@
 #!/bin/bash
 
-echo "Clear exported data from ./PA Viewer/data/fields/*"
-rm ./PA\ Viewer/data/fields/*
-touch ./PA\ Viewer/data/fields/_placeholder_
+echo "Clear exported data from ./Viewer/data/fields/*"
+rm ./Viewer/data/fields/*
+touch ./Viewer/data/fields/_placeholder_
 
 stderr="err.txt"
 stdout="out.txt"
 bot1="../ultimate-tic-tac-toe-bot/run_heur2.sh"
 bot2="./bots/randomBot/run.sh"
 
-numGames=20
+numGames=1
 numWins1=0
 numWins2=0
 numDraws=0
