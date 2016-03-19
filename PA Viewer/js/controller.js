@@ -69,15 +69,16 @@ PAViewer.controller('mainControl', ['$scope', '$rootScope','$route', '$location'
         return new Array(num);
     }
 
-    $scope.keyup = function(keyCode) {
+    $scope.keyDown = function(keyCode) {
         if ($scope.fields.length > 0) {
             switch (keyCode) {
                 case 190:
-                    $scope.currentMove = ($scope.currentMove + 1) % $scope.fields.length;
+                    $scope.currentMove = ($scope.currentMove < $scope.fields.length - 1) ?
+                                            $scope.currentMove + 1 : $scope.currentMove;
                     break;
                 case 188:
-                    $scope.currentMove = ($scope.currentMove - 1) % $scope.fields.length;
-                    $scope.currentMove = ($scope.currentMove < 0) ? 0 : $scope.currentMove;
+                    $scope.currentMove = ($scope.currentMove > 0) ?
+                            $scope.currentMove - 1 : $scope.currentMove;
                     break;
             }
             $scope.field = $scope.fields[$scope.currentMove];
