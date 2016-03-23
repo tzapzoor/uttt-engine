@@ -17,7 +17,7 @@ echo "Simulating "$numGames" games..."
 for i in `seq 1 $numGames`;
 do
     java -cp bin/:./GSON/* com.theaigames.ultimatetictactoe.UltimateTicTacToe $bot1 $bot2 2> $stderr 1> $stdout
-    result=$(cat $stdout | head -n -3 | cut -d ' ' -f3 | tail -n 1);
+    result=$(cat $stdout | tr "\n" "\0" | cut -d ' ' -f3)
     if [ "$result" == "player2" ]; then
         ((numWins2++))
     elif [ "$result" == "player1" ]; then

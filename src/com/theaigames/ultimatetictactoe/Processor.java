@@ -201,9 +201,9 @@ public class Processor implements GameHandler {
 		String result = "";
 
 		if (getWinner() != null) {
-			result += "Conclusion: WINNER " + getWinner().getName() + "\n\n";
+			result += "Conclusion: WINNER " + getWinner().getName() + " \n\n";
 		} else {
-			result += "Conclusion: WINNER DRAW\n\n";
+			result += "Conclusion: WINNER DRAW \n\n";
 		}
 		
 		return result
