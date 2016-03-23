@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo "Clear exported data from ./Viewer/data/fields/*"
+echo "Clear exported data from ./Viewer/data/*"
 rm ./Viewer/data/fields/*
-touch ./Viewer/data/fields/_placeholder_
+rm ./Viewer/data/thinking/*
 
 stderr="err.txt"
 stdout="out.txt"

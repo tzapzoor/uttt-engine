@@ -34,6 +34,7 @@ public class Processor implements GameHandler {
 
 	// used for playing a simulation of the game afterwards
 	private List<MoveResult> mMoveResults;
+	private int[] avgMoveTime = new int[2];
 
 	private int mRoundNumber = 1;
 	private List<Player> mPlayers;
@@ -197,12 +198,17 @@ public class Processor implements GameHandler {
 	@Override
 	public String getPlayedGame() {
 		exportData();
+		String result = "";
 
 		if (getWinner() != null) {
-			return "Conclusion: WINNER " + getWinner().getName() + "\n\n";
+			result += "Conclusion: WINNER " + getWinner().getName() + "\n\n";
+		} else {
+			result += "Conclusion: WINNER DRAW\n\n";
 		}
-
-		return "Conclusion: WINNER DRAW\n\n";
+		
+		return result
+				+ "\n\nAverage thinking times:\nplayer1: " + avgMoveTime[0]
+				+ "ms\nplayer2: " + avgMoveTime[1] + "ms\n";
 	}
 
 	private void exportData() {
@@ -226,14 +232,18 @@ public class Processor implements GameHandler {
 		}
 
 		// export thinking time and move data for each player
-		//all in one file :) as an array of json objects
+		// all in one file :) as an array of json objects
+
+		// this code also computes the average thinking time for each player
+		int player1Moves = 0;
+		int player2Moves = 0;
+
 		count = 0;
 		String jsonDirectoryThinking = UltimateTicTacToe.EXPORT_DIRECTORY
 				+ "thinking" + File.separator;
 		FileWriter writer;
 		try {
-			writer = new FileWriter(jsonDirectoryThinking
-					+ "thinking.json");
+			writer = new FileWriter(jsonDirectoryThinking + "thinking.json");
 			// start json array
 			writer.write("[");
 			for (int i = 0; i < mMoveResults.size(); i++) {
@@ -242,15 +252,28 @@ public class Processor implements GameHandler {
 					if (i < mMoveResults.size() - 1) {
 						writer.write(",");
 					}
-				}catch (IOException e) {
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
+
+				if (mMoveResults.get(i).getPlayerId() == 1) {
+					player1Moves++;
+					avgMoveTime[0] += mMoveResults.get(i).getThinkingTime();
+				} else {
+					player2Moves++;
+					avgMoveTime[1] += mMoveResults.get(i).getThinkingTime();
+				}
 			}
-			//end json array
+			// end json array
 			writer.write("]");
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+
+		if (player1Moves != 0 && player2Moves != 0) {
+			avgMoveTime[0] /= player1Moves;
+			avgMoveTime[1] /= player2Moves;
 		}
 	}
 }
