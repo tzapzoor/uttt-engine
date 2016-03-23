@@ -38,20 +38,20 @@ public class Processor implements GameHandler {
 	private int mRoundNumber = 1;
 	private List<Player> mPlayers;
 	private List<Move> mMoves;
-	private Field mBoard;
+	private Field mField;
 	private int mGameOverByPlayerErrorPlayerId = 0;
 
 	public Processor(List<Player> players, Field field) {
 		mPlayers = players;
-		mBoard = field;
+		mField = field;
 		mMoves = new ArrayList<Move>();
 		mMoveResults = new ArrayList<MoveResult>();
 
 		/* Create first move with empty field */
 		Move move = new Move(mPlayers.get(0));
-		MoveResult moveResult = new MoveResult(mPlayers.get(0), mBoard,
-				mPlayers.get(0).getId());
 		mMoves.add(move);
+		MoveResult moveResult = new MoveResult.Builder(mPlayers.get(0))
+				.withFieldData(mField).build();
 		mMoveResults.add(moveResult);
 	}
 
@@ -59,88 +59,65 @@ public class Processor implements GameHandler {
 	public void playRound(int roundNumber) {
 		for (Player player : mPlayers) {
 
-			this.mBoard.mRoundNr = mRoundNumber;
-			this.mBoard.mMoveNr = mMoves.size();
+			this.mField.mRoundNr = mRoundNumber;
+			this.mField.mMoveNr = mMoves.size();
 			player.sendUpdate("round", mRoundNumber);
 			player.sendUpdate("move", mMoves.size());
-			player.sendUpdate("field", mBoard.toString());
-			player.sendUpdate("macroboard", mBoard.macroBoardString());
+			player.sendUpdate("field", mField.toString());
+			player.sendUpdate("macroboard", mField.macroboardString());
 
-			if (getWinner() == null && !mBoard.isFull()) {
+			if (getWinner() == null && !mField.isFull()) {
 				String response = player.requestMove("move");
 				Move move = new Move(player);
-				MoveResult moveResult = new MoveResult(player, mBoard, player
-						.getId());
 				if (parseResponse(response, player)) {
-					move.setPosition(mBoard.getLastRow(), mBoard.getLastCol());
-					move.setIllegalMove(mBoard.getLastError());
+					move.setPosition(mField.getLastRow(), mField.getLastCol());
+					move.setIllegalMove(mField.getLastError());
 					mMoves.add(move);
-					moveResult = new MoveResult(player, mBoard, player.getId());
-					moveResult.setPosition(mBoard.getLastRow(), mBoard
-							.getLastCol());
-					moveResult.setIllegalMove(mBoard.getLastError());
-					mMoveResults.add(moveResult);
+					mMoveResults.add(new MoveResult.Builder(player)
+							.withFieldData(mField).build());
 				} else {
-					moveResult = new MoveResult(player, mBoard, player.getId());
-					moveResult.setPosition(mBoard.getLastRow(), mBoard
-							.getLastCol());
-					moveResult.setIllegalMove(mBoard.getLastError()
-							+ " (first try)");
-					mMoveResults.add(moveResult);
+					mMoveResults.add(new MoveResult.Builder(player)
+							.withFieldData(mField).build());
 
-					player.sendUpdate("field", mBoard.toString());
-					player.sendUpdate("macroboard", mBoard.macroBoardString());
+					player.sendUpdate("field", mField.toString());
+					player.sendUpdate("macroboard", mField.macroboardString());
 					response = player.requestMove("move");
 
 					if (parseResponse(response, player)) {
 						move = new Move(player);
-						moveResult = new MoveResult(player, mBoard, player
-								.getId());
-						move.setPosition(mBoard.getLastRow(), mBoard
+						move.setPosition(mField.getLastRow(), mField
 								.getLastCol());
 						mMoves.add(move);
-						moveResult.setPosition(mBoard.getLastRow(), mBoard
-								.getLastCol());
-						mMoveResults.add(moveResult);
-					} else {
-						moveResult = new MoveResult(player, mBoard, player
-								.getId());
-						moveResult.setPosition(mBoard.getLastRow(), mBoard
-								.getLastCol());
-						moveResult.setIllegalMove(mBoard.getLastError()
-								+ " (second try)");
-						mMoveResults.add(moveResult);
 
-						player.sendUpdate("field", mBoard.toString());
-						player.sendUpdate("macroboard", mBoard
-								.macroBoardString());
+						mMoveResults.add(new MoveResult.Builder(player)
+								.withFieldData(mField).build());
+					} else {
+						mMoveResults.add(new MoveResult.Builder(player)
+								.withFieldData(mField).build());
+
+						player.sendUpdate("field", mField.toString());
+						player.sendUpdate("macroboard", mField
+								.macroboardString());
 						response = player.requestMove("move");
 
 						if (parseResponse(response, player)) {
 							move = new Move(player);
-							moveResult = new MoveResult(player, mBoard, player
-									.getId());
-							move.setPosition(mBoard.getLastRow(), mBoard
+							move.setPosition(mField.getLastRow(), mField
 									.getLastCol());
 							mMoves.add(move);
-							moveResult.setPosition(mBoard.getLastRow(), mBoard
-									.getLastCol());
-							mMoveResults.add(moveResult);
+
+							mMoveResults.add(new MoveResult.Builder(player)
+									.withFieldData(mField).build());
 						} else { /* Too many errors, other player wins */
-							moveResult = new MoveResult(player, mBoard, player
-									.getId());
-							moveResult.setPosition(mBoard.getLastRow(), mBoard
-									.getLastCol());
-							moveResult.setIllegalMove(mBoard.getLastError()
-									+ " (last try)");
-							mMoveResults.add(moveResult);
+							mMoveResults.add(new MoveResult.Builder(player)
+									.withFieldData(mField).build());
 							mGameOverByPlayerErrorPlayerId = player.getId();
 						}
 					}
 				}
 
-				player.sendUpdate("field", mBoard.toString());
-				player.sendUpdate("macroboard", mBoard.macroBoardString());
+				player.sendUpdate("field", mField.toString());
+				player.sendUpdate("macroboard", mField.macroboardString());
 
 			}
 		}
@@ -159,11 +136,11 @@ public class Processor implements GameHandler {
 		if (parts.length >= 3 && parts[0].equals("place_move")) {
 			int col = Integer.parseInt(parts[1]);
 			int row = Integer.parseInt(parts[2]);
-			if (mBoard.placeMove(row, col, player.getId())) {
+			if (mField.placeMove(row, col, player.getId())) {
 				return true;
 			}
 		}
-		mBoard.mLastError = "Unknown command";
+		mField.mLastError = "Unknown command";
 		return false;
 	}
 
@@ -174,7 +151,7 @@ public class Processor implements GameHandler {
 
 	@Override
 	public AbstractPlayer getWinner() {
-		int winner = mBoard.getWinner();
+		int winner = mField.getWinner();
 		if (mGameOverByPlayerErrorPlayerId > 0) { /*
 												 * Game over due to too many
 												 * player errors. Look up the
@@ -197,33 +174,6 @@ public class Processor implements GameHandler {
 		return null;
 	}
 
-	@Override
-	public String getPlayedGame() {
-		// export as json
-		int count = 0;
-		for (MoveResult r : mMoveResults) {
-			try {
-				// write converted json data to a file named "file.json"
-				String jsonDirectory = "."
-						+ File.separator + "Viewer" + File.separator
-						+ "data" + File.separator + "fields" + File.separator;
-				FileWriter writer = new FileWriter(jsonDirectory
-						+ "field-" + count + ".json");
-				writer.write(r.getJsonField());
-				writer.close();
-				count++;
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		if (getWinner() != null) {
-			return "Conclusion: WINNER " + getWinner().getName() + "\n\n";
-		}
-
-		return "Conclusion: WINNER DRAW\n\n";
-	}
-
 	/**
 	 * Returns a List of Moves played in this game
 	 * 
@@ -236,11 +186,71 @@ public class Processor implements GameHandler {
 	}
 
 	public Field getField() {
-		return mBoard;
+		return mField;
 	}
 
 	@Override
 	public boolean isGameOver() {
-		return (getWinner() != null) || (mBoard.isFull());
+		return (getWinner() != null) || (mField.isFull());
+	}
+
+	@Override
+	public String getPlayedGame() {
+		exportData();
+
+		if (getWinner() != null) {
+			return "Conclusion: WINNER " + getWinner().getName() + "\n\n";
+		}
+
+		return "Conclusion: WINNER DRAW\n\n";
+	}
+
+	private void exportData() {
+		// should create a new directory here with a timestamp
+
+		// export field data
+		int count = 0;
+		String jsonDirectoryFields = UltimateTicTacToe.EXPORT_DIRECTORY
+				+ "fields" + File.separator;
+		for (MoveResult r : mMoveResults) {
+			try {
+
+				FileWriter writer = new FileWriter(jsonDirectoryFields
+						+ "field-" + count + ".json");
+				writer.write(r.getJsonField());
+				writer.close();
+				count++;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		// export thinking time and move data for each player
+		//all in one file :) as an array of json objects
+		count = 0;
+		String jsonDirectoryThinking = UltimateTicTacToe.EXPORT_DIRECTORY
+				+ "thinking" + File.separator;
+		FileWriter writer;
+		try {
+			writer = new FileWriter(jsonDirectoryThinking
+					+ "thinking.json");
+			// start json array
+			writer.write("[");
+			for (int i = 0; i < mMoveResults.size(); i++) {
+				try {
+					writer.write(mMoveResults.get(i).getJsonMoveResult());
+					if (i < mMoveResults.size() - 1) {
+						writer.write(",");
+					}
+				}catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			//end json array
+			writer.write("]");
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

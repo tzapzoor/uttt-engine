@@ -36,10 +36,13 @@ import com.theaigames.engine.io.IOPlayer;
 public abstract class AbstractPlayer {
     
     private String name;
-    private IOPlayer bot;
     private long timeBank;
-    private long maxTimeBank;
-    private long timePerMove;
+    transient private IOPlayer bot;
+    transient private long maxTimeBank;
+    transient private long timePerMove;
+    
+    /*used for game statistics*/
+    transient private long lastMoveThinkingTime = 0;
     
     public AbstractPlayer(String name, IOPlayer bot, long maxTimeBank, long timePerMove) {
         this.name = name;
@@ -160,6 +163,9 @@ public abstract class AbstractPlayer {
         long timeElapsed = System.currentTimeMillis() - startTime;
         updateTimeBank(timeElapsed);
         
+        // how long it took the bot to respond
+        lastMoveThinkingTime = timeElapsed;
+        
         return response;
     }
     
@@ -173,5 +179,9 @@ public abstract class AbstractPlayer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    public long getLastMoveThinkingTime() {
+    	return lastMoveThinkingTime;
     }
 }

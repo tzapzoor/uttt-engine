@@ -27,7 +27,7 @@ public class Field {
 	private int[][] mBoard;
 	private int[][] mMacroboard;
 
-	public final int COLS = 3, ROWS = 3;
+	transient public final int COLS = 3, ROWS = 3;
 	transient public String mLastError = "";
 
 	transient private int mLastCol = 0;
@@ -283,7 +283,7 @@ public class Field {
 		return r;
 	}
 
-	public String macroBoardString() {
+	public String macroboardString() {
 		String r = "";
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 0; j < COLS; j++) {

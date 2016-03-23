@@ -33,7 +33,7 @@ import com.theaigames.game.player.AbstractPlayer;
 
 public abstract class AbstractMove {
     
-    private AbstractPlayer player; //player that did this move
+    transient private AbstractPlayer player; //player that did this move
     private String illegalMove; //gets the value of the error message if move is illegal, else remains empty
     
     public AbstractMove(AbstractPlayer player) {

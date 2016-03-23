@@ -18,30 +18,42 @@
 package com.theaigames.ultimatetictactoe.moves;
 
 import com.google.gson.Gson;
-import com.theaigames.game.player.AbstractPlayer;
+import com.theaigames.game.moves.AbstractMove;
 import com.theaigames.ultimatetictactoe.field.Field;
+import com.theaigames.ultimatetictactoe.player.Player;
 
 public class MoveResult extends Move {
-	private String mBoard;
-	private String mMacroBoard;
-	private int mPlayerId;
-	private String jsonField;
+	private int mPlayerId = 0;
+	private long mThinkingTime = 0;
 
-	public MoveResult(AbstractPlayer player, Field field, int playerId) {
+	transient private String mJsonField = "";
+	transient private String mJsonThis = "";
+	
+	public static class Builder {
+		private MoveResult moveResult;
+		private Gson exporter = new Gson();
+		
+		public Builder(Player player) {
+			moveResult = new MoveResult(player);
+		}
+		
+		public Builder withFieldData(Field field) {
+			moveResult.mJsonField = exporter.toJson(field);
+			moveResult.setPosition(field.getLastRow(), field.getLastCol());
+			moveResult.setIllegalMove(field.getLastError());
+			return this;
+		}
+		
+		public MoveResult build() {
+			moveResult.mJsonThis = exporter.toJson(moveResult);
+			return moveResult;
+		}
+	}
+	
+	private MoveResult(Player player) {
 		super(player);
-		Gson exporter = new Gson();
-		jsonField = exporter.toJson(field);
-		mBoard = field.toString();
-		mMacroBoard = field.macroBoardString();
-		mPlayerId = playerId;
-	}
-
-	public String toString() {
-		return mBoard;
-	}
-
-	public String getMacroBoard() {
-		return mMacroBoard;
+		mPlayerId = player.getId();
+		mThinkingTime = player.getLastMoveThinkingTime();
 	}
 
 	public int getPlayerId() {
@@ -49,6 +61,15 @@ public class MoveResult extends Move {
 	}
 
 	public String getJsonField() {
-		return jsonField;
+		return mJsonField;
+	}
+	
+	
+	public String getJsonMoveResult() {
+		return mJsonThis;
+	}
+	
+	public long getThinkingTime() {
+		return mThinkingTime;
 	}
 }
