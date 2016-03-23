@@ -207,7 +207,7 @@ public class Processor implements GameHandler {
 		}
 		
 		return result
-				+ "\n\nAverage thinking times:\nplayer1: " + avgMoveTime[0]
+				+ "Average thinking times:\nplayer1: " + avgMoveTime[0]
 				+ "ms\nplayer2: " + avgMoveTime[1] + "ms\n";
 	}
 

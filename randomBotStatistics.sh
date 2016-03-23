@@ -6,10 +6,10 @@ rm ./Viewer/data/thinking/*
 
 stderr="err.txt"
 stdout="out.txt"
-bot1="../ultimate-tic-tac-toe-bot/run_heur2.sh"
+bot1="../ultimate-tic-tac-toe-bot/run.sh"
 bot2="./bots/randomBot/run.sh"
 
-numGames=1
+numGames=100
 numWins1=0
 numWins2=0
 numDraws=0
