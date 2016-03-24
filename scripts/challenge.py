@@ -89,5 +89,7 @@ while (True):
         print("Sleeping for 6 minutes.")
         time.sleep(6*60)
 
-    print("Done with the first batch. Sleeping for 15 minutes")
-    time.sleep(15*60)
+    print("Done with the first batch. Sleeping for 10 minutes")
+    time.sleep(5*60)
+    print("[INFO] 5 minutes left")
+    time.sleep(5*60)
