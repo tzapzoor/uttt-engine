@@ -28,7 +28,7 @@ public class Field {
 	private int[][] mMacroboard;
 
 	transient public final int COLS = 3, ROWS = 3;
-	transient public String mLastError = "";
+	public String mLastError = "";
 
 	transient private int mLastCol = 0;
 	transient private int mLastRow = 0;

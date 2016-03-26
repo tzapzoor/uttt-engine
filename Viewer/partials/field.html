@@ -51,8 +51,9 @@ body {
             <tr>
                 <td>
                     <div style="text-align: center; margin-left: 5px;">
-                        Round: {{field.mRoundNr}},
-                        Move: {{field.mMoveNr}}
+                        Round: {{field.mRoundNr}};
+                        Move: {{field.mMoveNr}};
+                        <span ng-if="field.mLastError !== ''" style="color: red;">Err: {{field.mLastError}};</span>
                     </div>
                     <table class="table table-bordered table-hover" style="width: 460px; table-layout: fixed;">
                         <tr ng-repeat="(rowIndex, row) in field.mBoard track by $index" style="height:55px;">
