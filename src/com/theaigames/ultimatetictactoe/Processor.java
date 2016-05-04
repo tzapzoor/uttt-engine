@@ -275,5 +275,12 @@ public class Processor implements GameHandler {
 			avgMoveTime[0] /= player1Moves;
 			avgMoveTime[1] /= player2Moves;
 		}
+		
+		// server error dump
+		for (Player p : mPlayers) {
+			System.err.println("Player" + p.getId() + " dump");
+			System.err.println("==============================");
+			System.err.println(p.getBot().getDump());
+		}
 	}
 }
