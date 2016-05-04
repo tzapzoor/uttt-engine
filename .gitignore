@@ -7,3 +7,5 @@ err.txt
 out.txt
 bots/*bin/
 *.json
+*.o
+*/bot
