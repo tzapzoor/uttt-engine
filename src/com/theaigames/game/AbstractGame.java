@@ -82,11 +82,11 @@ public abstract class AbstractGame implements Logic {
 		List<String> botDirs = new ArrayList<String>();
 		List<String> botIds = new ArrayList<String>();
 		
-		if (args.length <= 0) {
-			throw new RuntimeException("No arguments provided.");
+		if (args.length < 2) {
+			throw new RuntimeException("Wrong arguments provided.");
 		}
 		
-		for(int i=0; i < args.length; i++) {
+		for(int i=0; i < 2; i++) {
 			botIds.add(i + "");
 			botDirs.add(args[i]);
 		}

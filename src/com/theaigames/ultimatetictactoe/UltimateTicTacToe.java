@@ -35,6 +35,8 @@ public class UltimateTicTacToe extends AbstractGame {
 	private Field mBoard;
 	private int mBotId = 1;
 
+	public static boolean useExports = true;
+
 	private List<Player> players;
 
 	@Override
@@ -83,6 +85,10 @@ public class UltimateTicTacToe extends AbstractGame {
 	// DEV_MODE can be turned on to easily test the
 	// engine from eclipse
 	public static void main(String args[]) throws Exception {
+
+		if (args.length == 3 && args[2].equals("--no-exports"))
+			useExports = false;
+
 		UltimateTicTacToe game = new UltimateTicTacToe();
 
 		// DEV_MODE settings

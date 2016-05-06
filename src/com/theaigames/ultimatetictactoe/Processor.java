@@ -212,6 +212,8 @@ public class Processor implements GameHandler {
 	}
 
 	private void exportData() {
+		if (!UltimateTicTacToe.useExports) return;
+		
 		// should create a new directory here with a timestamp
 
 		// export field data
