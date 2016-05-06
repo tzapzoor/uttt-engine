@@ -1,27 +1,19 @@
 Warning: no args provided => running default bot (winning)!
 Max level: 5
-Num nodes: 43397
-Max level: 6
-Num nodes: 68156
-Max level: 6
-Num nodes: 64929
-Max level: 6
-Num nodes: 67884
-Max level: 6
-Num nodes: 65508
-Max level: 6
-Num nodes: 66935
-Max level: 6
-Num nodes: 64260
-Max level: 6
-Num nodes: 67364
-Max level: 6
-Num nodes: 67076
-Max level: 6
-Num nodes: 64373
-Max level: 6
-Num nodes: 63763
-Max level: 6
-Num nodes: 67508
-Max level: 6
-Num nodes: 65890
+Num nodes: 10833MMax level: 5
+Num nodes: 34443MMax level: 5
+Num nodes: 40553MMax level: 5
+Num nodes: 36501MMax level: 5
+Num nodes: 26020MMax level: 5
+Num nodes: 33604MMax level: 5
+Num nodes: 39816MMax level: 5
+Num nodes: 35651MMax level: 5
+Num nodes: 15291MMax level: 5
+Num nodes: 13351MMax level: 5
+Num nodes: 19849MMax level: 5
+Num nodes: 36163MMax level: 5
+Num nodes: 39964MMax level: 5
+Num nodes: 34874MMax level: 5
+Num nodes: 35535MMax level: 4
+Num nodes: 18022MMax level: 5
+Num nodes: 16148
