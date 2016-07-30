@@ -1,11 +1,25 @@
 Ultimate Tic Tac Toe Engine
 ============
 
-To compile (Linux):
+#### Demo:
+
+Run script.
+![](http://imgur.com/download/e11XFcX)
+
+Match viewer (only works in Firefox).
+![](http://imgur.com/download/3xb6Vtc)
+![](http://imgur.com/download/MMANL8O)
+
+
+Multiple simulations script.
+![](http://imgur.com/download/yeSLSGN)
+
+
+#### Compilation (Linux):
 
     $ ./compile.sh
 
-To run:
+#### Running:
 
     $ ./test.sh [bot1] [bot2]
 
