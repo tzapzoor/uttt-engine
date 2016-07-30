@@ -1,8 +1,6 @@
 Ultimate Tic Tac Toe Engine
 ============
 
-#### Demo:
-
 Run script.
 ![](http://imgur.com/download/e11XFcX)
 
