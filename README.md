@@ -4,7 +4,7 @@ Ultimate Tic Tac Toe Engine
 Run script.
 ![](http://imgur.com/download/e11XFcX)
 
-Match viewer (only works in Firefox).
+Match viewer (only works in Firefox). Use '<' and '>' to iterate through the moves.
 ![](http://imgur.com/download/3xb6Vtc)
 ![](http://imgur.com/download/MMANL8O)
 
